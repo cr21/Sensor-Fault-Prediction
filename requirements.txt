@@ -1,2 +1,2 @@
-pymongo==4.2.0
--e . # import current project folder as import usecase
+pymongo[srv]==4.1.1
+-e .

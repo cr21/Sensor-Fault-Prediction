@@ -14,6 +14,7 @@ REQUIREMENT_FILE_NAME = "requirements.txt"
 
 HYPHEN_E_DOT = "-e ."
 
+
 def get_all_requirement_list() -> List[str]:
     """
     Get All Requirements from reading from requirements.txt
@@ -24,13 +25,14 @@ def get_all_requirement_list() -> List[str]:
     """
 
     with open(REQUIREMENT_FILE_NAME) as req_files:
+        requirement_list: List[str] = []
         all_raw_requirements = req_files.readlines()
-        all_raw_requirements = [req_name.replace("\n", "") for req_name in all_raw_requirements]
+        requirement_list = [req_name.replace("\n", "") for req_name in all_raw_requirements]
 
-        if HYPHEN_E_DOT in all_raw_requirements:
-            all_raw_requirements.remove(HYPHEN_E_DOT)
+        if HYPHEN_E_DOT in requirement_list:
+            requirement_list.remove(HYPHEN_E_DOT)
 
-        return all_raw_requirements
+        return requirement_list
 
 
 setup(
@@ -40,7 +42,5 @@ setup(
     author_email=AUTHOR_EMAIL,
     description=DESRCIPTION,
     packages=find_packages(),
-    install_requires= get_all_requirement_list()
+    install_requires=get_all_requirement_list()
 )
-
-
