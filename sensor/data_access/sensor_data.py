@@ -1,6 +1,5 @@
 import sys
 from typing import Optional
-
 import numpy as np
 import pandas as pd
 from sensor.configuration.mongo_db_connection import MongoDBConnector
