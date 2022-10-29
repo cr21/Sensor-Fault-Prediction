@@ -6,6 +6,7 @@ from sensor.entity.config_entity import DataIngestionConfig
 from sensor.entity.artifact_entry import DataIngestionArtifact
 from pandas import DataFrame
 from sensor.data_access.sensor_data import SensorData
+from sklearn.model_selection import train_test_split
 
 
 class DataIngestion:
@@ -17,7 +18,34 @@ class DataIngestion:
 
     
     def split_data_as_train_test(self,df:DataFrame)->None:
+        """
+        Take Data from Feature Store and Convert into Train test split
+        """
         try:
+            logging.info("Performed Test Train split on Dataframe")
+            train_set, test_set=train_test_split(df, test_size=self.data_ingestion_config.train_test_split_ratio)
+            logging.info(
+                "Exited split_data_as_train_test method of Data_Ingestion class"
+            )
+
+            dir_path_name=os.path.dirname(self.data_ingestion_config.training_file_path)
+
+            os.makedirs(dir_path_name, exist_ok=True)
+
+            logging.info(f"Exporting train and test file path.")
+
+            train_set.to_csv(
+                self.data_ingestion_config.training_file_path, index=False, header=True
+            )
+
+            test_set.to_csv(
+                self.data_ingestion_config.testing_file_path, index=False, header=True
+            )
+
+            logging.info(f"Exported train and test file path.")
+
+
+
             pass
         except Exception as exp:
             raise SensorException(exp)
