@@ -4,7 +4,9 @@ from time import time
 from sensor.constant import training_pipeline
 
 class TrainingPipelineConfig:
-
+    """
+    Training Pipeline configuration option
+    """
 
     def __init__(self,timestamp=datetime.now(), pipeline_name=training_pipeline.PIPELINE_NAME):
         timestamp = timestamp.strftime("%m_%d_%Y_%H_%M_%S")
@@ -15,7 +17,11 @@ class TrainingPipelineConfig:
 
     
 class DataIngestionConfig:
-
+    """
+    DataIngestion Configuration
+    central place to control Data Ingestion workflow management
+    
+    """
     def __init__(self, training_pipeline_config:TrainingPipelineConfig) -> None:
         self.data_ingestion_dir:str = os.path.join(
             training_pipeline_config.artifact_dir, training_pipeline.DATA_INGESTION_DIR_NAME
