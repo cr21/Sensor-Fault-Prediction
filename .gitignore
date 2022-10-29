@@ -8,7 +8,8 @@ __pycache__/
 
 .idea
 
-
+# Artifacts
+/artifact/*
 # Distribution / packaging
 .Python
 build/
