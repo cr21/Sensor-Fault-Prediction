@@ -11,7 +11,7 @@ def error_message_detail(error_message: str, error_detail: sys):
 
 class SensorException(Exception):
 
-    def __init__(self, error_message: str, error_detail: sys):
+    def __init__(self, error_message: str, error_detail: sys=sys):
         """
         :param error_message: custom error message in string format
         :param error_detail: custom error details which is instance of sys

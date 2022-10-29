@@ -1,11 +1,11 @@
 import pymongo
-from sensor.constant.database import DATABASE_NAME, MONGO_DB_URL
-# from sensor.exception import SensorException
+from sensor.constant.database import DATABASE_NAME
+from sensor.exception import SensorException
+from sensor.constant.env_variable import MONGODB_URL_KEY
 import os
 import certifi
-
 ca = certifi.where()
-
+MONGO_DB_URL = os.getenv(MONGODB_URL_KEY)
 
 class MongoDBConnector:
     client = None
@@ -19,7 +19,8 @@ class MongoDBConnector:
             self.database = self.client[self.db_name]
 
         except Exception as exp:
-            raise exp
+            raise SensorException(exp)
+
 
     def to_dict(self):
         return self.__dict__
