@@ -2,14 +2,13 @@
 __pycache__/
 *.py[cod]
 *$py.class
-
+artifact
+.vscode
 # C extensions
 *.so
-
-.idea
+artifact/*
+.idea/
 .DS_Store
-# Artifacts
-/artifact/*
 # Distribution / packaging
 .Python
 build/
