@@ -3,7 +3,7 @@ import os,sys
 from sensor.logger import logging
 from sensor.exception import SensorException
 from sensor.entity.config_entity import TrainingPipelineConfig, DataIngestionConfig
-from sensor.entity.artifact_entry import DataIngestionArtifact
+from sensor.entity.artifact_entity import DataIngestionArtifact
 from sensor.components.data_ingestion import DataIngestion
 class TrainPipeline:
     def __init__(self, train_pipeline_config:TrainingPipelineConfig) -> None:
