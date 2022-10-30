@@ -6,6 +6,8 @@ from sensor.entity.config_entity import DataIngestionConfig
 from sensor.entity.artifact_entity import DataIngestionArtifact
 from pandas import DataFrame
 from sensor.data_access.sensor_data import SensorData
+from sensor.utils.main_utils import read_yaml_file
+from sensor.constant.training_pipeline import SCHEMA_FILE_PATH
 from sklearn.model_selection import train_test_split
 
 
@@ -13,6 +15,7 @@ class DataIngestion:
     def __init__(self, data_ingestion_config:DataIngestionConfig) -> None:
         try:
             self.data_ingestion_config=data_ingestion_config
+            self._schema_config = read_yaml_file(SCHEMA_FILE_PATH)
         except Exception as exp:
             raise SensorException(exp)
 
@@ -74,6 +77,8 @@ class DataIngestion:
         
         try:
             dataframe=self.export_data_to_feature_store()
+            # dropping few columns based on our data analysis
+            dataframe = dataframe.drop(self._schema_config["drop_columns"],axis=1)
             self.split_data_as_train_test(dataframe)
             data_ingestion_artifact = DataIngestionArtifact(
                 trained_file_path=self.data_ingestion_config.training_file_path,

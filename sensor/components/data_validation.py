@@ -51,7 +51,7 @@ class DataValidation:
             numerical_column_present = True
             missing_numerical_columns = []
             for num_col in numerical_columns_in_schema:
-                if num_col in dataframe_columns:
+                if num_col not in dataframe_columns:
                     numerical_column_present= False
                     missing_numerical_columns.append(num_col)
 
@@ -134,7 +134,8 @@ class DataValidation:
             status = self.is_numerical_columns_exists(dataframe=test_data_frame)
             if not status:
                 error_message=f"{error_message}Test dataframe does not contain all numerical columns columns.\n"
-
+            print(error_message)
+            print("*"*30)
             if len(error_message)>0:
                 raise Exception(error_message)
 
