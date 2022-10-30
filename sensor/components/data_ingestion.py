@@ -3,7 +3,7 @@ import os, sys
 from sensor.exception import SensorException
 from sensor.logger import logging
 from sensor.entity.config_entity import DataIngestionConfig
-from sensor.entity.artifact_entry import DataIngestionArtifact
+from sensor.entity.artifact_entity import DataIngestionArtifact
 from pandas import DataFrame
 from sensor.data_access.sensor_data import SensorData
 from sklearn.model_selection import train_test_split
