@@ -87,7 +87,7 @@ class DataTransformation:
 
             #save numpy array data
             save_numpy_array_data( self.data_transformation_config.transformed_train_file_path, data=train_arr, )
-            save_numpy_array_data( self.data_transformation_config.transformed_test_file_path,data=test_arr,)
+            save_numpy_array_data( self.data_transformation_config.transformed_test_file_path,data==test_arr,)
             save_object( self.data_transformation_config.transformed_object_file_path, proprocessor_object)
             
             data_transformation_artifact = DataTransformationArtifact(
