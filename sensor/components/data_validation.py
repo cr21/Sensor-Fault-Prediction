@@ -133,9 +133,7 @@ class DataValidation:
                 error_message=f"{error_message}Train dataframe does not contain all numerical columns columns.\n"
             status = self.is_numerical_columns_exists(dataframe=test_data_frame)
             if not status:
-                error_message=f"{error_message}Test dataframe does not contain all numerical columns columns.\n"
-            print(error_message)
-            print("*"*30)
+                error_message=f"{error_message}Test dataframe does not contain all numerical columns columns.\n"        
             if len(error_message)>0:
                 raise Exception(error_message)
 
