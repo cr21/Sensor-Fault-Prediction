@@ -81,14 +81,14 @@ class TrainPipeline:
 
     def run_pipeline(self):
         try:
-            # data_ingested_artifact:DataIngestionArtifact=self.start_data_ingestion()
-            # data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingested_artifact)
-            # data_transformation_artifact=self.start_data_transformation(data_validation_artifact)
+            data_ingested_artifact:DataIngestionArtifact=self.start_data_ingestion()
+            data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingested_artifact)
+            data_transformation_artifact=self.start_data_transformation(data_validation_artifact)
             # print(data_transformation_artifact.transformed_train_file_path, data_transformation_artifact.transformed_test_file_path,data_transformation_artifact.transformed_object_file_path)
-            data_transformation_artifact = DataTransformationArtifact("artifact/11_04_2022_21_45_11/data_transformation/transformed_object/preprocessing.pkl",
-            "artifact/11_04_2022_21_45_11/data_transformation/transformed/train.npy",
-            "artifact/11_04_2022_21_45_11/data_transformation/transformed/test.npy"
-            )
+            # data_transformation_artifact = DataTransformationArtifact("artifact/11_04_2022_21_45_11/data_transformation/transformed_object/preprocessing.pkl",
+            # "artifact/11_04_2022_21_45_11/data_transformation/transformed/train.npy",
+            # "artifact/11_04_2022_21_45_11/data_transformation/transformed/test.npy"
+            # )
             model_trainer_artifact=self.start_model_trainer(data_transformation_artifact)
         except  Exception as e:
             raise  SensorException(e,sys)

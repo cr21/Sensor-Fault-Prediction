@@ -7,6 +7,7 @@ artifact
 # C extensions
 *.so
 artifact/*
+model_factory/*
 .idea/
 .DS_Store
 # Distribution / packaging
