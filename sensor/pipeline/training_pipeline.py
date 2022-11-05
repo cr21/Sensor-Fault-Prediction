@@ -8,20 +8,24 @@ from sensor.entity.config_entity import (
                                                 DataValidationConfig,
                                                 DataTransformationConfig,
                                                 ModelTrainerConfig,
-                                                ModelEvaluationConfig
+                                                ModelEvaluationConfig,
+                                                ModelPusherConfig
                                 )
 from sensor.entity.artifact_entity import (
                                                 DataIngestionArtifact,
                                                 DataValidationArtifact,
                                                 DataTransformationArtifact,
                                                 ModelTrainerArtifact,
-                                                ModelEvaluationArtifact
+                                                ModelEvaluationArtifact,
+                                                ModelPusherArtifact
                                             )
 from sensor.components.data_ingestion import DataIngestion
 from sensor.components.data_validation import DataValidation
 from sensor.components.data_transformation import DataTransformation
 from sensor.components.model_evaluation import ModelEvalution
 from sensor.components.model_trainer import ModelTrainer
+from sensor.components.model_pusher import ModelPusher
+
 class TrainPipeline:
     def __init__(self, train_pipeline_config:TrainingPipelineConfig) -> None:
         self.train_pipeline_config= TrainingPipelineConfig()
@@ -84,19 +88,31 @@ class TrainPipeline:
         except  Exception as e:
             raise  SensorException(e,sys)
 
-    def start_model_pusher(self):
+    def start_model_pusher(self,model_evaluation_artifact:ModelEvaluationArtifact)->ModelPusherArtifact:
         try:
-            pass
+            model_pusher_config = ModelPusherConfig(
+                training_pipeline_config=self.training_pipeline_config
+            )
+            model_pusher_component = ModelPusher(   
+                                                    model_pusher_config=model_pusher_config,
+                                                    model_eval_artifact=model_evaluation_artifact
+                                                )
+
+            model_pusher_artifact:ModelPusherArtifact= model_pusher_component.initiate_model_pusher()
+            return model_pusher_artifact
+
         except  Exception as e:
             raise  SensorException(e,sys)
 
-    def run_pipeline(self):
+    def run_pipeline(self)->None:
         try:
             data_ingested_artifact:DataIngestionArtifact=self.start_data_ingestion()
             data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingested_artifact)
             data_transformation_artifact=self.start_data_transformation(data_validation_artifact)
             model_trainer_artifact=self.start_model_trainer(data_transformation_artifact)
             model_eval_artifact:ModelEvaluationArtifact = self.start_model_evaluation(model_trainer_artifact, data_validation_artifact)
-            
+            if not model_eval_artifact.is_model_accepted:
+                raise Exception("currently trained Model is not better than the best model")
+            model_pusher_artifact:ModelPusherArtifact = self.start_model_pusher(model_evaluation_artifact=model_eval_artifact)      
         except  Exception as e:
-            raise  SensorException(e,sys)
+            raise  SensorException(e)

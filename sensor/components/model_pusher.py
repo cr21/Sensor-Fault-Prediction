@@ -5,7 +5,7 @@ from sensor.entity.artifact_entity import  ModelEvaluationArtifact, ModelPusherA
 import os
 import shutil
 
-class ModelPuser:
+class ModelPusher:
 
     def __init__(self, model_pusher_config:ModelPusherConfig, model_eval_artifact:ModelEvaluationArtifact):
         try:
@@ -14,9 +14,9 @@ class ModelPuser:
         except Exception as exp:
             raise SensorException(exp)
 
-    def initiate_model_pusher(self,model_eval_artifact:ModelEvaluationArtifact)->ModelPusherArtifact:
+    def initiate_model_pusher(self,)->ModelPusherArtifact:
         try:
-            trained_model_path:str = model_eval_artifact.trained_model_path
+            trained_model_path:str = self.model_eval_artifact.trained_model_path
             model_file_path  = self.model_pusher_config.model_file_path 
             # creating model_directory
             # copy trained model to model_pusher artifact dir, this for validation purpose 
