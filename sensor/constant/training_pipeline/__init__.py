@@ -77,3 +77,13 @@ Prefix :  MODEL_EVALUATION
 MODEL_EVALUATION_CHANGE_THRESHOLD_SCORE:float=0.02
 MODEL_EVALUATION_DIR_NAME:str="model_evaluation"
 MODEL_EVALUATION_REPORT_FILE:str="model_evaluation_report.yaml"
+
+"""
+Model Pusher  related constant starts here:
+Prefix :  MODEL_PUSHER
+"""
+
+MODEL_PUSHER_DIR_NAME:str="model_pusher"
+MODEL_PUSHER_SAVED_MODEL_DIR:str=SAVED_MODEL_DIR
+
+

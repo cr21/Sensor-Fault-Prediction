@@ -49,5 +49,9 @@ class ModelEvaluationArtifact:
     best_mode_metric_artifact:ClassficationMetricArtifact
 
 
+@dataclass
+class ModelPusherArtifact:
+    saved_model_path:str
+    model_file_path:str
 
 
