@@ -7,17 +7,20 @@ from sensor.entity.config_entity import (
                                                 DataIngestionConfig,
                                                 DataValidationConfig,
                                                 DataTransformationConfig,
-                                                ModelTrainerConfig
+                                                ModelTrainerConfig,
+                                                ModelEvaluationConfig
                                 )
 from sensor.entity.artifact_entity import (
                                                 DataIngestionArtifact,
                                                 DataValidationArtifact,
                                                 DataTransformationArtifact,
-                                                ModelTrainerArtifact
+                                                ModelTrainerArtifact,
+                                                ModelEvaluationArtifact
                                             )
 from sensor.components.data_ingestion import DataIngestion
 from sensor.components.data_validation import DataValidation
 from sensor.components.data_transformation import DataTransformation
+from sensor.components.model_evaluation import ModelEvalution
 from sensor.components.model_trainer import ModelTrainer
 class TrainPipeline:
     def __init__(self, train_pipeline_config:TrainingPipelineConfig) -> None:
@@ -50,7 +53,8 @@ class TrainPipeline:
     def start_data_transformation(self, data_validation_artifact:DataValidationArtifact):
         try:
             data_transformation_config = DataTransformationConfig(training_pipeline_config=self.train_pipeline_config)
-            data_transformer  = DataTransformation(data_transformation_config=data_transformation_config,
+            data_transformer  = DataTransformation(
+                                                    data_transformation_config=data_transformation_config,
                                                     data_validation_artifact=data_validation_artifact
                                                 )
             data_transfomation_artifact:DataTransformationArtifact=data_transformer.initate_data_transformation()
@@ -67,9 +71,16 @@ class TrainPipeline:
         except  Exception as e:
             raise  SensorException(e,sys)
 
-    def start_model_evaluation(self):
+    def start_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact, data_validation_artifact:DataValidationArtifact)-> ModelEvaluationArtifact:
         try:
-            pass
+            model_evaluation_config = ModelEvaluationConfig(training_pipeline_config=self.train_pipeline_config)
+            model_evaluation_component:ModelEvalution = ModelEvalution(
+                                                                        model_evaluation_config=model_evaluation_config,
+                                                                        model_trainer_artifact=model_trainer_artifact,
+                                                                        data_validation_artifact=data_validation_artifact
+                                                                    )
+            model_eval_artifact:ModelEvaluationArtifact= model_evaluation_component.initiate_model_evaluation()
+            return model_eval_artifact
         except  Exception as e:
             raise  SensorException(e,sys)
 
@@ -84,11 +95,8 @@ class TrainPipeline:
             data_ingested_artifact:DataIngestionArtifact=self.start_data_ingestion()
             data_validation_artifact=self.start_data_validaton(data_ingestion_artifact=data_ingested_artifact)
             data_transformation_artifact=self.start_data_transformation(data_validation_artifact)
-            # print(data_transformation_artifact.transformed_train_file_path, data_transformation_artifact.transformed_test_file_path,data_transformation_artifact.transformed_object_file_path)
-            # data_transformation_artifact = DataTransformationArtifact("artifact/11_04_2022_21_45_11/data_transformation/transformed_object/preprocessing.pkl",
-            # "artifact/11_04_2022_21_45_11/data_transformation/transformed/train.npy",
-            # "artifact/11_04_2022_21_45_11/data_transformation/transformed/test.npy"
-            # )
             model_trainer_artifact=self.start_model_trainer(data_transformation_artifact)
+            model_eval_artifact:ModelEvaluationArtifact = self.start_model_evaluation(model_trainer_artifact, data_validation_artifact)
+            
         except  Exception as e:
             raise  SensorException(e,sys)

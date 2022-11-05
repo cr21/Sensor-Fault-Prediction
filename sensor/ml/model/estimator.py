@@ -1,5 +1,8 @@
 
 from sklearn.pipeline import Pipeline
+import os
+from sensor.constant.training_pipeline import MODEL_FILE_NAME, SAVED_MODEL_DIR
+
 class TargetValueMapping:
     def __init__(self):
         self.neg: int = 0
@@ -27,5 +30,45 @@ class SensorModel:
             X_transform=self.preproessor.transform(X)
             y_pred = self.model.predict(X_transform)
             return y_pred
+        except Exception as exp:
+            raise exp
+
+
+class ModelResolver:
+
+    def __init__(self, model_dir:str=SAVED_MODEL_DIR) -> None:
+        try:
+            self.model_dir=model_dir
+        except Exception as exp:
+            raise exp
+        
+
+    def get_best_model(self)->str:
+        try:
+            timestamps = list(map(int,os.listdir(self.model_dir)))
+            latest_timestamp = max(timestamps)
+            latest_model_path= os.path.join(self.model_dir,f"{latest_timestamp}",MODEL_FILE_NAME)
+            return latest_model_path
+        except Exception as exp:
+            raise exp
+        
+
+    def is_model_exists(self)-> bool: 
+        try:
+            # save model dir does not exists
+            if not os.path.exists(self.model_dir):
+                return False
+            
+            # check if saved model dir has some data in it
+            timestamps  = os.listdir(self.model_dir)
+            if len(timestamps) == 0:
+                return False 
+            
+            latest_model_path = self.get_best_model()
+            # check if path residing in save model dir is valid path
+            if not os.path.exists(latest_model_path):
+                return False
+
+            return True
         except Exception as exp:
             raise exp

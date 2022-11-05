@@ -39,6 +39,15 @@ class ModelTrainerArtifact:
     test_metric_artifact:ClassficationMetricArtifact
 
 
+@dataclass
+class ModelEvaluationArtifact:
+    is_model_accepted:bool
+    improved_accuracy:float
+    best_model_path:str
+    trained_model_path:str
+    train_model_metric_artifact:ClassficationMetricArtifact
+    best_mode_metric_artifact:ClassficationMetricArtifact
+
 
 
 

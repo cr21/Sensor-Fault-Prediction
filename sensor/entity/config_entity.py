@@ -107,8 +107,7 @@ class ModelTrainerConfig:
     
     """
     def __init__(self, training_pipeline_config:TrainingPipelineConfig, ) -> None:
-        timestamp = datetime.now()
-        timestamp = timestamp.strftime("%m_%d_%Y_%H_%M_%S")
+        
         self.model_trainer_dir:str=os.path.join(training_pipeline_config.artifact_dir,training_pipeline.MODEL_TRAINER_DIR_NAME)
         self.model_trained_file_path:str=os.path.join(
             self.model_trainer_dir, 
@@ -118,3 +117,19 @@ class ModelTrainerConfig:
         self.model_config_file_path:str=os.path.join(self.model_trainer_dir, training_pipeline.MODEL_TRAINER_MODEL_CONFIG_FILE_PATH)
         self.best_model_detail_file_path:str=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_BEST_MODEL_DETAIL_FILE_PATH)
         self.model_overfit_underfit_threshold:str=training_pipeline.MODEL_TRAINER_OVERFIT_UNDERFIT_THRESHOLD
+
+
+
+class ModelEvaluationConfig:
+
+    def __init__(self,training_pipeline_config:TrainingPipelineConfig) -> None:
+       
+        self.model_eval_dir=os.path.join(training_pipeline_config.artifact_dir,
+                                                training_pipeline.MODEL_EVALUATION_DIR_NAME
+                                            )
+            
+        self.report_File_path = os.path.join(self.model_eval_dir, training_pipeline.MODEL_EVALUATION_REPORT_FILE)     
+        self.eval_threshold = training_pipeline.MODEL_EVALUATION_CHANGE_THRESHOLD_SCORE
+
+        
+

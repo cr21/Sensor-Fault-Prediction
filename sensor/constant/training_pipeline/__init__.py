@@ -15,6 +15,7 @@ MODEL_FILE_NAME:str="model.pkl"
 SCHEMA_FILE_PATH:str=os.path.join("config","schema.yaml")
 SCHEMA_DROP_COLUMNS:str = "drop_columns"
 
+SAVED_MODEL_DIR =os.path.join("saved_models")
 
 """
 Data Ingestion related constant starts here:
@@ -66,3 +67,13 @@ MODEL_TRAINER_EXPECTED_ACCURACY=0.9
 MODEL_TRAINER_OVERFIT_UNDERFIT_THRESHOLD=0.05
 MODEL_TRAINER_MODEL_CONFIG_FILE_PATH="Model_Configuration"
 MODEL_TRAINER_BEST_MODEL_DETAIL_FILE_PATH="best_model_detail.yaml"
+
+
+
+"""
+Model Evaluation  related constant starts here:
+Prefix :  MODEL_EVALUATION
+"""
+MODEL_EVALUATION_CHANGE_THRESHOLD_SCORE:float=0.02
+MODEL_EVALUATION_DIR_NAME:str="model_evaluation"
+MODEL_EVALUATION_REPORT_FILE:str="model_evaluation_report.yaml"

@@ -5,11 +5,10 @@ import numpy as np
 from sensor.logger import logging
 from sensor.exception import SensorException
 from sklearn.tree import DecisionTreeClassifier
-from sklearn.linear_model import LogisticRegression
+# from sklearn.linear_model import LogisticRegression
 from sensor.ml.metric.classification_metric import get_classifiaction_score
-# import xgboost as xgb
 from sensor.ml.model.estimator import SensorModel
-from sklearn.metrics import f1_score, roc_auc_score
+# from sklearn.metrics import f1_score, roc_auc_score
 from sensor.utils.main_utils import save_object,load_object
 import os
 
