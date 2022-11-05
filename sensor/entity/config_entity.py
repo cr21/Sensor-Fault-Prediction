@@ -113,4 +113,4 @@ class ModelTrainerConfig:
         self.model_trained_file_path:str=os.path.join(self.model_trainer_dir, training_pipeline.MODEL_TRAINER_TRAINED_MODEL_FILE_PATH)
         self.model_expected_accuracy:float=training_pipeline.MODEL_TRAINER_EXPECTED_ACCURACY
         self.model_config_file_path:str=os.path.join(self.model_trainer_dir, training_pipeline.MODEL_TRAINER_MODEL_CONFIG_FILE_PATH)
-        
+        self.best_model_detail_file_path:str=os.path.join(self.model_trainer_dir,training_pipeline.MODEL_TRAINER_BEST_MODEL_DETAIL_FILE_PATH)
