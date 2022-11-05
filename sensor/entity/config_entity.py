@@ -98,3 +98,19 @@ class DataTransformationConfig:
                                                     training_pipeline.DATA_TRANSFORMATION_TRANSFORMED_OBJECT_DIR,
                                                     training_pipeline.PREPROCESSING_OBJECT_FILE_NAME
                                                     )
+
+
+class ModelTrainerConfig:
+    """
+    Model Training Configuration
+    central place to control Model training workflow management
+    
+    """
+    def __init__(self, training_pipeline_config:TrainingPipelineConfig, ) -> None:
+        timestamp = datetime.now()
+        timestamp = timestamp.strftime("%m_%d_%Y_%H_%M_%S")
+        self.model_trainer_dir:str=os.path.join(training_pipeline.MODEL_TRAINER_DIR_NAME, timestamp)
+        self.model_trained_file_path:str=os.path.join(self.model_trainer_dir, training_pipeline.MODEL_TRAINER_TRAINED_MODEL_FILE_PATH)
+        self.model_expected_accuracy:float=training_pipeline.MODEL_TRAINER_EXPECTED_ACCURACY
+        self.model_config_file_path:str=os.path.join(self.model_trainer_dir, training_pipeline.MODEL_TRAINER_MODEL_CONFIG_FILE_PATH)
+        

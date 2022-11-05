@@ -21,4 +21,15 @@ class DataTransformationArtifact:
     transformed_train_file_path:str
     transformed_test_file_path:str
 
+@dataclass
+class MetricArtifact:
+    metric_file_path:str
+
+@dataclass
+class ModelTrainerArtifact:
+    trained_model_file_path:str
+
+
+
+
 
