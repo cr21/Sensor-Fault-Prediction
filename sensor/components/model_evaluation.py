@@ -9,6 +9,7 @@ from sensor.utils.main_utils import save_object,load_object, write_yaml_file
 from sensor.ml.model.estimator import ModelResolver
 import pandas as pd
 from sensor.constant.training_pipeline import TARGET_COLUMN
+from sensor.ml.model.estimator import TargetValueMapping
 
 class ModelEvalution:
     def __init__(self, model_evaluation_config:ModelEvaluationConfig, model_trainer_artifact:ModelTrainerArtifact,data_validation_artifact:DataValidationArtifact) -> None:
@@ -19,7 +20,7 @@ class ModelEvalution:
 
     def initiate_model_evaluation(self, model_trainer_artifact:ModelTrainerArtifact)->ModelEvaluationArtifact:
         try:
-            
+            logging.info("Model Evaluation starts")
             valid_train_file_path = self.data_validation_artifact.valid_train_file_path
             valid_test_file_path=self.data_validation_artifact.valid_test_file_path
 
@@ -32,6 +33,7 @@ class ModelEvalution:
             is_model_accepted = True
             trained_model_path:str = self.model_trainer_artifact.trained_model_file_path
             if not model_resolver.is_model_exists():
+                
                 model_eval_artifact = ModelEvaluationArtifact(
                     is_model_accepted= is_model_accepted,
                     improved_accuracy=None,
@@ -44,10 +46,16 @@ class ModelEvalution:
                 return model_eval_artifact
 
             latest_model_file_path = model_resolver.get_best_model()
-            latest_model = load_object(file_path=latest_model_file_path)
-            trained_model = load_object(file_path=trained_model_path)
+            latest_model:SensorModel = load_object(file_path=latest_model_file_path)
+            logging.info(f"latestmodel type {type(latest_model)}")
+            trained_model:SensorModel= load_object(file_path=trained_model_path)
 
             y_true = df[TARGET_COLUMN]
+            # transform target string label to int label
+            y_true.replace(TargetValueMapping().to_dict(), inplace=True)
+            # drop target column
+            df.drop(TARGET_COLUMN,axis=1, inplace=True)
+            
             y_trained_pred = trained_model.predict(df)
             y_latest_pred = latest_model.predict(df)
 
@@ -56,7 +64,7 @@ class ModelEvalution:
             trained_metric = get_classifiaction_score(y_true, y_trained_pred)
             latest_metric = get_classifiaction_score(y_true, y_latest_pred)
 
-            improved_metric_score =  trained_metric  - latest_metric
+            improved_metric_score =  trained_metric.f1_score  - latest_metric.f1_score
             if  improved_metric_score > self.model_evaluation_config.eval_threshold:
                 is_model_accepted = True
             else:
@@ -72,12 +80,12 @@ class ModelEvalution:
                 )
 
             model_eval_report = model_eval_artifact.__dict__
-            logging.info(f"Model evaluation artifact: {model_eval_artifact}")
+            logging.info(f"Model evaluation artifact generated: {model_eval_artifact}")
             write_yaml_file(self.model_evaluation_config.report_File_path, model_eval_report, True)
             return model_eval_artifact
 
         except Exception as exp:
-            pass
+            raise SensorException(exp)
         
 
 

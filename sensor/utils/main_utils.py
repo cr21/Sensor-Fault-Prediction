@@ -76,8 +76,9 @@ def load_object(file_path: str) -> object:
             raise Exception(f"{file_path} is not valid path")
         
         with open(file_path, "rb") as file_obj:
-            dill.load(file_obj)
             logging.info("Exited the load_object method of MainUtils class")
-            return dill
+            return dill.load(file_obj)
+            
+            
     except Exception as e:
         raise SensorException(e, sys) from e

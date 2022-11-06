@@ -41,7 +41,7 @@ class ModelTrainer:
 
     def train_model(self, x_train, y_train):
         try:
-            clf = DecisionTreeClassifier(random_state=0, max_depth=5)
+            clf = DecisionTreeClassifier(random_state=0, max_depth=10)
             # clf = LogisticRegression(solver='saga', max_iter=200)
             clf.fit(x_train, y_train)
             return clf
@@ -106,10 +106,13 @@ class ModelTrainer:
 
 
             # model is expected save model and transformation to saved model
-            preprocessor_obj = load_object(self.data_transformation_artifact.transformed_object_file_path)
-            sensor_model = SensorModel(model=model, preproessor=preprocessor_obj)
+            preprocessor_obj = load_object(
+                self.data_transformation_artifact.transformed_object_file_path
+                )
+            
             model_Dir_path = os.path.dirname(self.model_training_config.model_trained_file_path)
             os.makedirs(model_Dir_path, exist_ok=True)
+            sensor_model = SensorModel( preprocessor=preprocessor_obj,model=model)
             save_object(self.model_training_config.model_trained_file_path, obj=sensor_model)
             
             model_trainer_artifact = ModelTrainerArtifact(self.model_training_config.model_trained_file_path,

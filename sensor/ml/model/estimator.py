@@ -18,20 +18,20 @@ class TargetValueMapping:
 
 class SensorModel:
 
-    def __init__(self, preproessor:Pipeline, model):
+    def __init__(self, preprocessor:Pipeline, model):
         try:
-            self.preproessor=preproessor
+            self.preprocessor=preprocessor
             self.model=model
         except Exception as exp:
             raise exp
     
-    def predict(self, X):
+    def predict(self, x):
         try:
-            X_transform=self.preproessor.transform(X)
-            y_pred = self.model.predict(X_transform)
-            return y_pred
-        except Exception as exp:
-            raise exp
+            x_transform = self.preprocessor.transform(x)
+            y_hat = self.model.predict(x_transform)
+            return y_hat
+        except Exception as e:
+            raise e
 
 
 class ModelResolver:
