@@ -65,7 +65,7 @@ async def predict_route():
         if not model_resolver.is_model_exists():
             return Response("Model is not available")
         
-        best_model_path = model_resolver.get_best_model_path()
+        best_model_path = model_resolver.get_best_model()
         model = load_object(file_path=best_model_path)
         y_pred = model.predict(df)
         df['predicted_column'] = y_pred
@@ -94,5 +94,5 @@ def main():
 
 if __name__ == '__main__':
    main()
-#    set_env_variable(env_file_path=env_file_path)
-#    app_run(app, host=APP_HOST, port=APP_PORT)
+   set_env_variable(env_file_path=env_file_path)
+   app_run(app, host=APP_HOST, port=APP_PORT)
