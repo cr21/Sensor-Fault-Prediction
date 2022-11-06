@@ -1,8 +1,14 @@
 pymongo[srv]==4.1.1
 from-root
-scikit-learn==1.1.3
+scikit-learn
 PyYAML
 pandas
 dill
 imblearn
+fastapi
+httptools
+uvicorn
+awscli
+mypy-boto3-s3
 -e .
+
