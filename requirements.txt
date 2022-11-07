@@ -10,5 +10,6 @@ httptools
 uvicorn
 awscli
 mypy-boto3-s3
+python-multipart
 -e .
 

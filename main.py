@@ -3,9 +3,11 @@ from sensor.constant.database import DATABASE_NAME
 from sensor.exception import SensorException
 from sensor.logger import logging
 import os, sys
+from io import BytesIO
+from sensor.ml.model.estimator import SensorModel
 from sensor.entity.config_entity import TrainingPipelineConfig
 from sensor.pipeline.training_pipeline import TrainPipeline
-from fastapi import FastAPI
+from fastapi import FastAPI,UploadFile
 from sensor.utils.main_utils import read_yaml_file
 from sensor.constant.application import APP_HOST, APP_PORT
 from starlette.responses import RedirectResponse
@@ -15,6 +17,10 @@ from fastapi.responses import Response
 from sensor.ml.model.estimator import ModelResolver,TargetValueMapping
 from sensor.utils.main_utils import load_object
 from fastapi.middleware.cors import CORSMiddleware
+from sensor.utils.main_utils import read_yaml_file
+from sensor.constant.training_pipeline import TARGET_COLUMN,SCHEMA_FILE_PATH
+import pandas as pd
+
 
 env_file_path=os.path.join(os.getcwd(),"env.yaml")
 
@@ -54,19 +60,38 @@ async def train_route():
     except Exception as e:
         return Response(f"Error Occurred! {e}")
 
-@app.get("/predict")
-async def predict_route():
+
+
+
+
+@app.post("/predict")
+async def predict_route(file:UploadFile):
     try:
         #get data from user csv file
         #conver csv file to dataframe
+        if not file.filename.endswith(".csv"):
+            raise Response(f"Please upload csv file {e}")
+        file_contents = await file.read()
 
-        df=None
+        buffer = BytesIO(file_contents)
+        df = pd.read_csv(buffer)
+        buffer.close()
+        file.file.close()
+        logging.info(type(df), df.shape)
+
+
+        
         model_resolver = ModelResolver(model_dir=SAVED_MODEL_DIR)
         if not model_resolver.is_model_exists():
             return Response("Model is not available")
         
+        # drop target column
+        df.drop(TARGET_COLUMN, axis=1, inplace=True)
+        # drop uncessary columns
+        dropped_columns = read_yaml_file(SCHEMA_FILE_PATH)
+        
         best_model_path = model_resolver.get_best_model()
-        model = load_object(file_path=best_model_path)
+        model:SensorModel = load_object(file_path=best_model_path)
         y_pred = model.predict(df)
         df['predicted_column'] = y_pred
         df['predicted_column'].replace(TargetValueMapping().reverse_mapping(),inplace=True)
@@ -93,6 +118,6 @@ def main():
 
 
 if __name__ == '__main__':
-   main()
+#    main()
    set_env_variable(env_file_path=env_file_path)
    app_run(app, host=APP_HOST, port=APP_PORT)
