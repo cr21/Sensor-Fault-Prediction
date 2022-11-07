@@ -89,7 +89,7 @@ async def predict_route(file:UploadFile):
         df.drop(TARGET_COLUMN, axis=1, inplace=True)
         # drop uncessary columns
         dropped_columns = read_yaml_file(SCHEMA_FILE_PATH)
-        
+
         best_model_path = model_resolver.get_best_model()
         model:SensorModel = load_object(file_path=best_model_path)
         y_pred = model.predict(df)
@@ -118,6 +118,6 @@ def main():
 
 
 if __name__ == '__main__':
-#    main()
-   set_env_variable(env_file_path=env_file_path)
-   app_run(app, host=APP_HOST, port=APP_PORT)
+   main()
+#    set_env_variable(env_file_path=env_file_path)
+#    app_run(app, host=APP_HOST, port=APP_PORT)
