@@ -97,7 +97,6 @@ async def predict_route(file:UploadFile):
         df['predicted_column'].replace(TargetValueMapping().reverse_mapping(),inplace=True)
         
         #decide how to return file to user.
-        
     except Exception as e:
         raise Response(f"Error Occured! {e}")
 
