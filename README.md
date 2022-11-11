@@ -43,7 +43,8 @@ The problem is to reduce the cost due to unnecessary repairs. So it is required 
 ## How to run?
 Need MongoDB in your Local System, We are deploying project using ECR, EC2 so we need AWS account
 
-
+# Project Workflow
+![image](/flowcharts/0_Sensor%20Training%20Pipeline.png)
 ## Data Collections
 ![image](/project_architecture_diagrams/DataCollection.png)
 
