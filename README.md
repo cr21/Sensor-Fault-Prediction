@@ -7,11 +7,11 @@ indicates that the failure was caused by something else.
 
 The problem is to reduce the cost due to unnecessary repairs. So it is required to minimize the false predictions.
 
-|True class | Positive | Negative | |
-| ----------- | ----------- |   |  |
-|<b>Predicted class</b>||| |
-| Positive      |   -       | cost_1  |    |
-| Negative   | cost_2        |  | |
+| True class      | Positive |   Negative |
+| --------------- | -------- | ---------- |
+| Predicted Class |          |            |
+| Positive        |          | Cost 1     |
+| Negative        | Cost 2   |            |
 
 
 Cost 1 = 10 and Cost 2 = 500
