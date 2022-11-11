@@ -6,9 +6,9 @@ artifact
 .vscode
 # C extensions
 *.so
-artifact/*
-model_factory/*
-saved_models/*
+# artifact/*
+# model_factory/*
+# saved_models/*
 .idea/
 .DS_Store
 # Distribution / packaging

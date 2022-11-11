@@ -1,0 +1,6 @@
+Model:
+  metric:
+    F1: 0.9203125
+    accuracy: 0.9248452696728559
+    roc_auc: 0.9248452696728559
+  name: LogisticRegression
