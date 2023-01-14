@@ -126,7 +126,7 @@ MONGO DB URL:
 Linux/MAC user
 
 ```
-export MONGO_DB_URL=mongodb+srv://cr:root@cluster0.ufj8ovv.mongodb.net/?retryWrites=true&w=majority
+export MONGO_DB_URL=mongodb+srv://<username>:<password>.<cluster_id>.mongodb.net/?retryWrites=true&w=majority
 ```
 
 then run 
